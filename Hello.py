@@ -19,32 +19,39 @@ LOGGER = get_logger(__name__)
 
 
 def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
 
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+    import streamlit as st
+	import pandas as pd
+	import numpy as np
+	import plotly.express as px
+	#px.set_mapbox_access_token(open(".mapbox_token").read())
+	
+	#hd_500 = pd.read_csv(r"Datasets/(Heart Disease) 500_Cities__City-level_Data__GIS_Friendly_Format___2019_release.csv")
+	hd_mort_demo = pd.read_csv(r"Datasets//Heart_Disease_Mortality_Data_Among_us_Adults_35_by_State_Territory_and_County_2018_2020.csv")
+	#cd_indic = pd.read_excel(r"Datasets//US Chronic Disease Indicators Adjusted by Age.xlsx")
+	
+	#hd_mort_demo = hd_mort.loc[hd_mort['Data_Value_Type']=='Age-adjusted, 3-year Average Rate']
+	
+	# testing
+	#st.subheader("Heart Diseases in 500 Cities")
+	#st.write(hd_500)
+	#mort_fig = px.scatter_geo(hd_mort_demo.dropna(), lat='Y_lat', lon='X_lon', 
+	#                             hover_data=['Stratification1', 'Stratification2'], projection='albers usa')
+	
+	# Sidebar Data
+	st.sidebar.header('Filter Criteria')
+	data_view = st.sidebar.selectbox('Select Data View', options=['County', 'State'])
+	gender = st.sidebar.selectbox('Select Gender', options=hd_mort_demo['Stratification1'].unique().tolist())
+	race = st.sidebar.selectbox('Select Race', options=hd_mort_demo['Stratification2'].unique().tolist())
+	state = st.sidebar.selectbox('Filter for State', options=hd_mort_demo['LocationAbbr'].unique().tolist())
+	
+	hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) & (hd_mort_demo['Stratification1']==gender)
+	                                       & (hd_mort_demo['Stratification2']==race) & (hd_mort_demo['LocationAbbr']==state)]
+	
+	
+	st.subheader("Heart Diseases Mortality in US Adults per 100,000")
+	#st.plotly_chart(mort_fig)
+	st.map(hd_mort_demo_filter.dropna(subset=['Y_lat', 'X_lon', 'Data_Value']), latitude='Y_lat', longitude='X_lon')
 
 
 if __name__ == "__main__":
