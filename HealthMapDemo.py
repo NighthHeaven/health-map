@@ -37,6 +37,7 @@ data_view = st.sidebar.selectbox('Select Data View', options=['County', 'State']
 gender = st.sidebar.selectbox('Select Gender', options=hd_mort_demo['Stratification1'].unique().tolist())
 race = st.sidebar.selectbox('Select Race', options=hd_mort_demo['Stratification2'].unique().tolist())
 state = st.sidebar.selectbox('Filter for State', options=hd_mort_demo['LocationAbbr'].unique().tolist())
+all_data = False
 
 hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) & (hd_mort_demo['Stratification1']==gender)
                                      & (hd_mort_demo['Stratification2']==race) & (hd_mort_demo['LocationAbbr']==state)]
