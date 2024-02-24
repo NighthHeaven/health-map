@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import folium
+import geopandas
 #px.set_mapbox_access_token(open(".mapbox_token").read())
 
 #hd_500 = pd.read_csv(r"Datasets/(Heart Disease) 500_Cities__City-level_Data__GIS_Friendly_Format___2019_release.csv")
@@ -43,11 +44,13 @@ all_data = False
 hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) & (hd_mort_demo['Stratification1']==gender)
                                      & (hd_mort_demo['Stratification2']==race) & (hd_mort_demo['LocationAbbr']==state)]
 
-
+## Folium test
 st.subheader("Heart Diseases Mortality in US Adults per 100,000")
 #st.plotly_chart(mort_fig)
 #st.map(hd_mort_demo_filter.dropna(subset=['Y_lat', 'X_lon', 'Data_Value']), latitude='Y_lat', longitude='X_lon')
 fol_test = folium.Map([hd_mort_demo['Y_lat'].mean(), hd_mort_demo['X_lon'].mean()], zoom_start=12) 
+mort_xy = geopandas.points_from_xy(hd_mort_demo['X_lon'], hd_mort_demo['Y_lat'])
+print(mort_xy)
 folium.Choropleth(geo_data=folium.datasets.get_path('us_counties'),
                   data=hd_mort_demo,
                   columns=['LocationDesc', 'Data_Value']).add_to(fol_test) 
