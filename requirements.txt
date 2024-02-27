@@ -6,3 +6,4 @@ streamlit
 plotly
 folium
 geopandas
+streamlit_folium

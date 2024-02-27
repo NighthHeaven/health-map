@@ -20,6 +20,7 @@ import plotly.express as px
 import folium
 import geopandas
 from folium.plugins import HeatMap
+from streamlit_folium import st_folium
 #px.set_mapbox_access_token(open(".mapbox_token").read())
 
 #hd_500 = pd.read_csv(r"Datasets/(Heart Disease) 500_Cities__City-level_Data__GIS_Friendly_Format___2019_release.csv")
@@ -56,7 +57,7 @@ fol_test = folium.Map([hd_mort_demo['Y_lat'].mean(), hd_mort_demo['X_lon'].mean(
 #                  data=hd_mort_demo,
 #                  columns=['LocationDesc', 'Data_Value']).add_to(fol_test) 
 hd_mort_demo = hd_mort_demo.dropna()
-points_weight = [[x,y,mort] for x,y,mort in zip(hd_mort_demo['X_lon'], hd_mort_demo['Y_lat'], hd_mort_demo['Data_Value'])]
+points_weight = [[x,y] for x,y in zip(hd_mort_demo['X_lon'], hd_mort_demo['Y_lat'])]
 HeatMap(points_weight).add_to(fol_test)
-st.write(fol_test)
+st.write(st_folium(fol_test))
 
