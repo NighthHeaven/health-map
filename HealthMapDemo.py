@@ -50,7 +50,7 @@ state = st.sidebar.selectbox('Filter for State', options=hd_mort_demo['LocationA
 all_data = False
 
 hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) & (hd_mort_demo['Stratification1']==gender)
-                                     & (hd_mort_demo['Stratification2']==race) & (hd_mort_demo['LocationAbbr']==state)]
+                                     & (hd_mort_demo['Stratification2']==race)]
 
 ## Folium test
 st.subheader("Heart Diseases Mortality in US Adults per 100,000")
