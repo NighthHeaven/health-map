@@ -56,7 +56,7 @@ hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) 
 st.subheader("Heart Diseases Mortality in US Adults per 100,000")
 #st.plotly_chart(mort_fig)
 #st.map(hd_mort_demo_filter.dropna(subset=['Y_lat', 'X_lon', 'Data_Value']), latitude='Y_lat', longitude='X_lon')
-fol_test = folium.Map([hd_mort_demo_filter['Y_lat'].mean(), hd_mort_demo_filter['X_lon'].mean()], zoom_start=12) 
+fol_test = folium.Map([hd_mort_demo['Y_lat'].mean(), hd_mort_demo['X_lon'].mean()], zoom_start=5)
 #mort_xy = geopandas.points_from_xy(hd_mort_demo['X_lon'], hd_mort_demo['Y_lat'])
 #print(mort_xy)
 #folium.Choropleth(geo_data=mort_xy,
