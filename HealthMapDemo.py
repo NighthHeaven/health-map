@@ -51,6 +51,6 @@ st_folium(fol_test)
 ## Adding Summary Statistics to the Side
 st.subheader("Top 10 Mortality Rates")
 hd_mort_demo_filtered = hd_mort_demo_filter.sort_values(by='Data_Value', ascending=False)
-st.bar_chart(hd_mort_demo_filtered, x='LocationDesc', y='Data_Value')
+st.bar_chart(hd_mort_demo_filtered.head(10), x='LocationDesc', y='Data_Value')
 
 
