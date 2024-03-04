@@ -25,17 +25,7 @@ from streamlit_folium import folium_static
 import streamlit.components.v1 as comp
 #px.set_mapbox_access_token(open(".mapbox_token").read())
 
-#hd_500 = pd.read_csv(r"Datasets/(Heart Disease) 500_Cities__City-level_Data__GIS_Friendly_Format___2019_release.csv")
 hd_mort_demo = pd.read_csv(r"Datasets//Heart_Disease_Mortality_Data_Among_us_Adults_35_by_State_Territory_and_County_2018_2020.csv")
-#cd_indic = pd.read_excel(r"Datasets//US Chronic Disease Indicators Adjusted by Age.xlsx")
-
-#hd_mort_demo = hd_mort.loc[hd_mort['Data_Value_Type']=='Age-adjusted, 3-year Average Rate']
-
-# testing
-#st.subheader("Heart Diseases in 500 Cities")
-#st.write(hd_500)
-#mort_fig = px.scatter_geo(hd_mort_demo.dropna(), lat='Y_lat', lon='X_lon', 
-#                             hover_data=['Stratification1', 'Stratification2'], projection='albers usa')
 
 # Sidebar Data
 hd_mort_demo = hd_mort_demo.dropna(subset=['X_lon'])
@@ -46,7 +36,6 @@ st.sidebar.header('Filter Criteria')
 data_view = st.sidebar.selectbox('Select Data View', options=['County', 'State'])
 gender = st.sidebar.selectbox('Select Gender', options=hd_mort_demo['Stratification1'].unique().tolist())
 race = st.sidebar.selectbox('Select Race', options=hd_mort_demo['Stratification2'].unique().tolist())
-#state = st.sidebar.selectbox('Filter for State', options=hd_mort_demo['LocationAbbr'].unique().tolist())
 all_data = False
 
 hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) & (hd_mort_demo['Stratification1']==gender)
@@ -54,15 +43,14 @@ hd_mort_demo_filter = hd_mort_demo[(hd_mort_demo['GeographicLevel']==data_view) 
 
 ## Folium test
 st.subheader("Heart Diseases Mortality in US Adults per 100,000")
-#st.plotly_chart(mort_fig)
-#st.map(hd_mort_demo_filter.dropna(subset=['Y_lat', 'X_lon', 'Data_Value']), latitude='Y_lat', longitude='X_lon')
-fol_test = folium.Map([hd_mort_demo['Y_lat'].mean(), hd_mort_demo['X_lon'].mean()], zoom_start=5, width=2000, height=800)
-#mort_xy = geopandas.points_from_xy(hd_mort_demo['X_lon'], hd_mort_demo['Y_lat'])
-#print(mort_xy)
-#folium.Choropleth(geo_data=mort_xy,
-#                  data=hd_mort_demo,
-#                  columns=['LocationDesc', 'Data_Value']).add_to(fol_test) 
+fol_test = folium.Map([hd_mort_demo['Y_lat'].mean(), hd_mort_demo['X_lon'].mean()], zoom_start=5, width=2000, height=800) 
 points_weight = [[y,x,mort] for x,y,mort in zip(hd_mort_demo_filter['X_lon'].astype(float), hd_mort_demo_filter['Y_lat'].astype(float), hd_mort_demo_filter['Data_Value'])]
-HeatMap(points_weight).add_to(fol_test)
+HeatMap(points_weight, radius=5).add_to(fol_test)
 st_folium(fol_test)
+
+## Adding Summary Statistics to the Side
+st.subheader("Top 10 Mortality Rates")
+hd_mort_demo_filtered = hd_mort_demo_filter.sort_values(by='Data_Value', ascending=False)
+st.bar_chart(hd_mort_demo_filtered, x='LocationDesc', y='Data_Value')
+
 
