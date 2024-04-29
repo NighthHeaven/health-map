@@ -85,14 +85,14 @@ if all_data:
     st.write("The default is state unless you change the filter criteria")
     st.write(f"Now Viewing Data for {view},  {location}")
     hd_mort_pop_view = hd_mort_demo[hd_mort_demo['LocationDesc'] == view]
-    hd_mort_pop_view['CatPlot'] = hd_mort_pop_view['Stratification1'] + " " + hd_mort_pop_view['Stratification2']
-    hd_mort_pop_view = hd_mort_pop_view.drop_duplicates(subset=['CatPlot', 'LocationDesc'], keep='first')
+    hd_mort_pop_view['Sex/Ethnicity'] = hd_mort_pop_view['Stratification1'] + " " + hd_mort_pop_view['Stratification2']
+    hd_mort_pop_view = hd_mort_pop_view.drop_duplicates(subset=['Sex/Ethnicity', 'LocationDesc'], keep='first')
     print(hd_mort_pop_view)
     fig = px.scatter(
         hd_mort_pop_view,
-        x="CatPlot",
+        x="Sex/Ethnicity",
         y="Data_Value",
-        color='CatPlot',
+        color='Sex/Ethnicity',
         size='Data_Value'   
         )
     st.plotly_chart(fig)
